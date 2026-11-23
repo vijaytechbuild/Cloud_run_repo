@@ -3,8 +3,8 @@ pipeline {
 
     environment {
         PROJECT_ID = 'project-b6a14a58-bec5-4698-bfb'
-        IMAGE_NAME = 'cloudrunlab_image'
-        DOCKER_REPO = 'vijay_cloud_run_repo'
+        DOCKER_REPO = 'cloudrunlab_repo'
+        DOCKER_OWNER = 'vijay0555docker'
         REGION = 'us-central1'
 
     }
@@ -20,7 +20,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh "docker build -t ${DOCKER_REPO}/${IMAGE_NAME}:${BUILD_NUMBER} ."
+                    sh "docker build -t ${DOCKER_OWNER}/${DOCKER_REPO}:${BUILD_NUMBER} ."
                 }
             }
         }
@@ -35,7 +35,7 @@ pipeline {
                     )]) {
                         sh """
                         echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-                        docker push ${DOCKER_REPO}/${IMAGE_NAME}:${BUILD_NUMBER}
+                        docker push ${DOCKER_OWNER}/${DOCKER_REPO}:${BUILD_NUMBER}
                         docker logout
                         """
                     }
@@ -56,8 +56,8 @@ pipeline {
                         gcloud config set project ${PROJECT_ID}
                         gcloud auth configure-docker
 
-                        gcloud run deploy ${IMAGE_NAME} \
-                            --image docker.io/${DOCKER_REPO}/${IMAGE_NAME}:${BUILD_NUMBER} \
+                        gcloud run deploy ${DOCKER_REPO} \
+                            --image docker.io/${DOCKER_OWNER}/${DOCKER_REPO}:${BUILD_NUMBER} \
                             --platform managed \
                             --region ${REGION} \
                             --allow-unauthenticated \
