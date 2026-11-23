@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         PROJECT_ID = 'project-b6a14a58-bec5-4698-bfb'
-        DOCKER_REPO = 'cloudrunlab_repo'
+        DOCKER_REPO = 'cloudrunlab-repo'
         DOCKER_OWNER = 'vijay0555docker'
         REGION = 'us-central1'
 
